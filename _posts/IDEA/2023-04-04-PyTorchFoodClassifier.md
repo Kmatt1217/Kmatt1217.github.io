@@ -342,3 +342,106 @@ Gradio의 전반적인 전제는 입력 -> 함수/모델 -> 출력을 매핑하�
 ## 8.1 Hugging Face Spaces?
 
   Hugging Face Spaces는 프로필 또는 조직의 프로필에서 직접 ML 데모 앱을 호스팅하는 간단한 방법을 제공한다. 이를 통해 ML 포트폴리오를 만들고, 컨퍼런스 또는 이해 관계자에게 프로젝트를 선보이고, ML 에코시스템의 다른 사람들과 협력할 수 있다.
+
+GitHub이 코딩 능력을 보여주는 곳이라면 Hugging Face Spaces는 (우리가 구축한 ML 데모 공유를 통해) 기계 학습 능력을 보여주는 곳이다.
+
+## 8.2 배포된 Gradio 앱 구조
+
+demos/
+└── foodvision_mini/
+    ├── 09_pretrained_effnetb2_feature_extractor_pizza_steak_sushi_20_percent.pth
+    ├── app.py
+    ├── examples/
+    │   ├── example_1.jpg
+    │   ├── example_2.jpg
+    │   └── example_3.jpg
+    ├── model.py
+    └── requirements.txt
+    
+왜 이 구조??
+
+간단한 구조 중 하나라서.
+
+  * Deployed app - https://huggingface.co/spaces/mrdbourke/foodvision_mini
+  * Example file structure - https://huggingface.co/spaces/mrdbourke/foodvision_mini/tree/main
+
+## 8.3 FoodVision 앱 파일을 저장할 `demos` 폴더 생성
+
+<script src="https://gist.github.com/Kmatt1217/f951f7a5672e5841f9d2a10d9a542f06.js"></script>
+
+## 8.4 FoodVision Mini 데모와 함께 사용할 예제 이미지 폴더 생성
+
+  * examples/ 디렉토리에 3개의 이미지가 있어야 함.
+  * 이미지는 test set에서로부터 추출되어야 함.
+
+<script src="https://gist.github.com/Kmatt1217/1148d0d230022aa0dec3b5ebfc16271a.js"></script>
+
+![스크린샷 2023-04-05 00-06-33](https://user-images.githubusercontent.com/129755780/229835969-98bc8f26-884b-40a7-8034-156a2f7e0cc9.png)
+
+## 8.5 훈련된 EffNetB2 모델을 FoodVision Mini 데모 디렉토리로 옮기기
+
+<script src="https://gist.github.com/Kmatt1217/7889fb69d36c06e5fe9bfe09b491b251.js"></script>
+
+![스크린샷 2023-04-05 00-07-25](https://user-images.githubusercontent.com/129755780/229836206-4e8a962c-8fd4-46bf-9c5e-bb894eeb4b9a.png)
+
+## 8.6 EffNetB2 모델을 Python 스크립트(`model.py`)로 전환
+
+<script src="https://gist.github.com/Kmatt1217/e564327cbc37779e8a5e38a49cb539ce.js"></script>
+
+간단하게 위에서 정의한 함수 코드 블럭 맨 윗줄에, %%writefile 위치/파일명 << 추가해주면 된다.
+
+## 8.7 FoodVision Mini Gradio 앱을 Python 스크립트(`app.py`)로 전환
+
+`app.py` 파일은 네 가지 주요 부분으로 구성.
+
+ 1. Import 및 클래스 이름 설정
+ 2. 모델 및 변환(transforms) 준비
+ 3. 예측 함수(`predict()`)
+ 4. Gradio 앱 - Gradio 인터페이스 + 시작 명령 (lauch command)
+
+<script src="https://gist.github.com/Kmatt1217/f8bb8d102382e3d71acd5c02dd0c6885.js"></script>
+
+Gradio 인터페이스 형성에 필요한 predict 함수와 함께, Gradio 인터페이스 구현에 필요한 코드를 하나의 코드 블럭에 넣어서 Script화.
+
+## 8.8 FoodVision mini `requirements.txt` 파일 생성
+
+`requirements.txt` 파일은 Hugging Face Space의 앱에 필요한 소프트웨어 dependecy를 알려줌. 
+
+필요한 모듈이 무엇이고, 그 버전이 어떻게 되는지 작성해주자.
+
+ * torch
+ * torchvision
+ * gradio
+
+<script src="https://gist.github.com/Kmatt1217/30dbaa76057b0a491359ec677710938b.js"></script>
+
+현재 내 jupyter에 설치된 모듈들의 버전이다. 개인별로 다를 수도 있으며 현재 (23년 3월) 세 모듈다 최신 버전일 것 임.
+
+# 9. FoodVision Mini 앱 HuggingFace Spaces 배포
+
+## 9.1 FoodVision Mini 앱 파일 다운로드
+
+`foodvision_mini` 데모 앱을 다운로드하고 HuggingFace Spaces에 업로드할 수 있다.
+
+Hugging Face Space(git 저장소와 유사한 Hugging Face 저장소라고도 함)에 업로드하기 위한 두 가지 방안이 있음.
+
+* Hugging Face 웹 인터페이스를 통한 업로드(가장 쉬움).
+* command 또는 terminal을 통해 업로드.
+ * extra) Hugging Face와 상호 작용하기 위해 huggingface_hub 라이브러리를 사용할 수도 있음.
+
+<script src="https://gist.github.com/Kmatt1217/ae817083deac3fb2bc0f52928704db2d.js"></script>
+
+foodvision_mini 디렉토리로 이동한 다음 압축.
+
+## 9.2 HuggingFace에 FoodVision Mini Gradio 데모 업로드
+
+앱을 embedding하여 앱을 공유할 수도 있음 - https://gradio.app/sharing-your-app/#embedding-hosted-spaces
+
+<script src="https://gist.github.com/Kmatt1217/b37ab796dacfcb672c9b15871a8af793.js"></script>
+
+![스크린샷 2023-04-05 00-19-56](https://user-images.githubusercontent.com/129755780/229839716-783788d5-c6f0-4ebd-a54b-22c646d6d2a3.png)
+
+
+
+
+
