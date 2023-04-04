@@ -60,7 +60,7 @@ https://www.learnpytorch.io/09_pytorch_model_deployment/#1-getting-data 를 통�
  1. EffNetB2를 통한 특성 추출
  2. Vit(Vision Transformer)를 통한 특성 추출
 
-# 3. EffNetB2 특성 추출기 만들기
+# 3. EffNetB2 특성 추출기
 
 Feature extractor(특성 추출기)는 기본 레이어가 고정되어 있고 출력 레이어 (또는 헤드 레이어)가 특정 task에 맞게 사용자 정의된 전이 학습(transfer learning) 모델의 용어이다.
 
@@ -71,7 +71,7 @@ PyTorch에서 사전 훈련된 EffNetB2 모델 - https://pytorch.org/vision/main
 PyTorch를 통해 EffNetB2 모델을 불러오고, 출력 층을 제외한 모든 층을 동결(freeze)시키고 마지막 층만 우리가 원하는 분류 Class 갯수에 맞추어 바꿔주자. 이후 우리의 task에 맞게
 fine-tuning할 것임.
 
-## 3.1 EffNetB2 특성 추출기를 만드는 함수 만들기
+## 3.1 EffNetB2 특성 추출기를 만드는 함수
 
 <script src="https://gist.github.com/Kmatt1217/75ca65b74e9b5dce73d1df5e447fbd31.js"></script>
 
@@ -83,15 +83,17 @@ fine-tuning할 것임.
 
 파라미터 수는 약 770만 개이다.
 
-## 3.2 EffNetB2 모델 훈련을 위한 DataLoader 만들기
+## 3.2 EffNetB2 모델 훈련을 위한 DataLoader
 
 <script src="https://gist.github.com/Kmatt1217/75be0f2a79108d3c55379481f1415052.js"></script>
 
 going_modular폴더를 타고 들어가면 data_setup.py라는 파일을 볼 수 있다. 여기서 create_dataloaders라는 함수를 불러왔다.
 
-## 3.3 EffNetB2 특성 추출기 학습하기
+## 3.3 EffNetB2 특성 추출기 학습
 
 <script src="https://gist.github.com/Kmatt1217/487418360a6e59c8d1566f536237694d.js"></script>
+
+engine.py 모듈을 불러와서 
 
 ![스크린샷 2023-04-04 22-06-27](https://user-images.githubusercontent.com/129755780/229801058-2e3efe51-fa7f-4f3f-9652-855171133198.png)
 
@@ -99,7 +101,7 @@ going_modular폴더를 타고 들어가면 data_setup.py라는 파일을 볼 수
 
 <script src="https://gist.github.com/Kmatt1217/f3997eb900f3627fb6c1cbad768b99b2.js"></script>
 
-![스크린샷 2023-04-04 22-07-39](https://user-images.githubusercontent.com/129755780/229801313-2e936fdf-3ce2-463b-b504-029d3e8f7252.png)
+![download](https://user-images.githubusercontent.com/129755780/229805295-82e7f306-ab08-4eb3-bded-0a48e2d760c9.png)
 
 test loss가 train loss보다 낮은데, Underfitting 되어 있는 것 같다. epoch를 더 크게 잡아 돌리면 될 것같다.
 
@@ -127,6 +129,82 @@ models폴더 내에 09_pretrained_effnetb2_feature_extractor_pizza_steak_sushi_2
 
 ![스크린샷 2023-04-04 22-12-53](https://user-images.githubusercontent.com/129755780/229802661-823a2cce-10bd-4bba-80fc-81eddcee7cb1.png)
 
-# 4. 특성 추출기(feature extractor)
+# 4. Vit 특성 추출기
 
+<script src="https://gist.github.com/Kmatt1217/b4205e316099f998498fc358536dca8b.js"></script>
 
+![스크린샷 2023-04-04 22-16-40](https://user-images.githubusercontent.com/129755780/229803776-01e57cb5-237e-41a9-b4a3-1d1195ab5784.png)
+
+## 4.1 ViT 모델 훈련을 위한 DataLoader
+
+<script src="https://gist.github.com/Kmatt1217/7929f03a4215297cce1028817c20b157.js"></script>
+
+![스크린샷 2023-04-04 22-17-45](https://user-images.githubusercontent.com/129755780/229804290-48322e5b-b37b-41b3-879e-0545eb174a85.png)
+
+## 4.2 ViT 특성 추출기 학습
+
+<script src="https://gist.github.com/Kmatt1217/b0d78484d767593eaca7b7a4d8d4b711.js"></script>
+
+![스크린샷 2023-04-04 22-18-42](https://user-images.githubusercontent.com/129755780/229804653-b758c126-0d62-42c6-b789-7eef90f61de9.png)
+
+## 4.3 ViT 손실 그래프
+
+![download](https://user-images.githubusercontent.com/129755780/229805229-fa74382e-6be5-4d3e-90b6-8cc6a0937f1c.png)
+
+## 4.4 ViT 특성 추출기 저장
+
+<script src="https://gist.github.com/Kmatt1217/41382734dd2c62e2038ad7f2be59cf56.js"></script>
+
+models폴더 내에 09_pretrained_vit_feature_extractor_pizza_steak_sushi_20_percent.pth 라는 이름으로 저장했다.
+
+## 4.5 ViT 특성 추출기 사이즈
+
+<script src="https://gist.github.com/Kmatt1217/1eb535228eadeec5189705c83da34051.js"></script>
+
+![스크린샷 2023-04-04 22-21-49](https://user-images.githubusercontent.com/129755780/229806079-78295eed-5a66-4569-8816-9362f7367838.png)
+
+EffNetB2에 비하면 상당히 용량이 크다.
+
+## 4.6 ViT 특성 추출기 속성
+
+<script src="https://gist.github.com/Kmatt1217/8c3791c30608dc67bd7f4369104fcdf5.js"></script>
+
+![스크린샷 2023-04-04 22-23-14](https://user-images.githubusercontent.com/129755780/229806565-08fcff6c-ee3b-4e32-9e8f-73cc588f5a3f.png)
+
+# 5. 훈련된 모델로 예측
+
+목표:
+
+ 1. 95% 이상의 정확도
+ 2. 빠른 속도 (30+FPS)
+
+두 가지 기준을 테스트 하기 위해서 해야 할 것
+
+ 1. Test 이미지를 넣어 정확도 확인
+ 2. 하나의 이미지를 분류하는데 걸리는 시간 측정
+
+pred_and_store() 이라는 함수를 만들어서 테스트해보자.
+
+우선 테스트할 이미를 불러오자.
+
+<script src="https://gist.github.com/Kmatt1217/2bf66aecb7c8aef56ba44277f6066d8d.js"></script>
+
+## 5.1 테스트 데이터 세트에서 수행할 함수 만들기
+
+pred_and_store()함수를 만들기 위한 절차.
+
+ 1.  경로의 list와 훈련된 PyTorch 모델 및 대상 클래스 이름 목록과 대상 장치를 변환하는 일련의 함수 작성.
+ 2. 빈 list 만들기 (나중에 모든 예측값의 전체 목록을 반환할 수 있음).
+ 3. Loop through the target input paths (the rest of the steps will take place inside the loop).
+ 4. target path를 반복. (나머지 단계는 루프 내에서 수행됨).
+ 5. 파일 경로에서 샘플 경로와 Ground Truth 클래스 가져오기.
+ 6. Start the prediction timer.
+ 7. Open the image using `PIL.Image.open(path)`.
+ 8. Transform the image to be usable with a given model.
+ 9. Prepare the model for inference by sending to the target device and turning on `eval()` mode.
+ 10. Turn on `torch.inference_mode()` and pass the target transformed image to the model and perform forward pass + calculate pred prob + pred class.
+ 11. Add the pred prob + pred class to empty dictionary from step 4.
+ 12. End the prediction timer started in step 6 and add the time to the prediction dictionary.
+ 13. See if the predicted class matches the ground truth class.
+ 14. Append the updated prediction dictionary to the empty list of predictions we created in step2.
+ 15. Return the list of prediction dictionaries.
