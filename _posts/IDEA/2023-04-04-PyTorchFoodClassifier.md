@@ -193,18 +193,152 @@ pred_and_store() 이라는 함수를 만들어서 테스트해보자.
 
 pred_and_store()함수를 만들기 위한 절차.
 
- 1.  경로의 list와 훈련된 PyTorch 모델 및 대상 클래스 이름 목록과 대상 장치를 변환하는 일련의 함수 작성.
+ 1. 경로의 list와 훈련된 PyTorch 모델 및 대상 클래스 이름 목록과 대상 장치를 변환하는 일련의 함수 작성.
  2. 빈 list 만들기 (나중에 모든 예측값의 전체 목록을 반환할 수 있음).
- 3. Loop through the target input paths (the rest of the steps will take place inside the loop).
- 4. target path를 반복. (나머지 단계는 루프 내에서 수행됨).
+ 3. target path를 반복. (나머지 단계는 루프 내에서 수행됨).
+ 4. 각 샘플에 대해 빈 Dictioinary 만들기(에측에 대한 통게가 여기에 들어감.)
  5. 파일 경로에서 샘플 경로와 Ground Truth 클래스 가져오기.
- 6. Start the prediction timer.
- 7. Open the image using `PIL.Image.open(path)`.
- 8. Transform the image to be usable with a given model.
- 9. Prepare the model for inference by sending to the target device and turning on `eval()` mode.
- 10. Turn on `torch.inference_mode()` and pass the target transformed image to the model and perform forward pass + calculate pred prob + pred class.
- 11. Add the pred prob + pred class to empty dictionary from step 4.
- 12. End the prediction timer started in step 6 and add the time to the prediction dictionary.
- 13. See if the predicted class matches the ground truth class.
- 14. Append the updated prediction dictionary to the empty list of predictions we created in step2.
- 15. Return the list of prediction dictionaries.
+ 6. 예측 타이머를 시작.
+ 7. `PIL.Image.open(path)` 를 사용하여 이미지 열기.
+ 8. 주어진 모델에서 사용할 수 있도록 이미지를 변환.
+ 9. 대상 Device(GPU)로 전송하고 `eval()` 모드를 켜서 추론을 위한 모델을 준비.
+ 10. `torch.inference_mode()`를 켜고 변환된 대상 이미지를 모델에 전달하고 forward pass 수행, 예상 확률 계산, 클래스 예측 수행.
+ 11. 4단계의 빈 Dictionary에 예상 확률과 예측한 클래스 추가.
+ 12. 6단계에서 시작한 예측 타이머를 종료하고 Dictionary에 시간을 추가.
+ 13. 예측된 클래스가 Ground Truth 클래스와 일치하는지 확인.
+ 14. 업데이트된 Dictionary를 2단계에서 만든 빈 예측 List에 추가.
+ 15. 예측에 대한 Dictionary의 목록을 반환.
+
+
+<script src="https://gist.github.com/Kmatt1217/0e28b727615bdd615ff84be1d565c10b.js"></script>
+
+## 5.2 EffNetB2으로 예측 수행
+
+2가지 고려 사항:
+
+ 1. Device - 모델 배포시, 이 모델이 항상 GPU에서만 구동될 경우는 없기 때문에, CPU에서 예측을 수행하자.
+ 2. Transform - 적절한 전처리(이미지 변환)가 이루어진 준비된 이미지에 대해 각 모델이 예측하도록 해야함. (ex: effnetb2모델을 통해 예측이 시행되기 위해서는 이미지가, effnetb2에 쓰이는 변환이 적용되어야 함.)
+
+<script src="https://gist.github.com/Kmatt1217/c10042fdf0d57bd6a3a740b65616073f.js"></script>
+
+![스크린샷 2023-04-04 23-38-16](https://user-images.githubusercontent.com/129755780/229827672-8fba3315-4988-467b-a334-60f4ad47fbf7.png)
+
+<script src="https://gist.github.com/Kmatt1217/c8dd1b6c950c304ba0bb88db86874cac.js"></script>
+
+![스크린샷 2023-04-04 23-38-42](https://user-images.githubusercontent.com/129755780/229827769-38a9713e-68f1-4c4d-958c-f5f6d749eebb.png)
+
+<script src="https://gist.github.com/Kmatt1217/46448c73ce74f8edecc7c3eaef556b6b.js"></script>
+
+![스크린샷 2023-04-04 23-39-15](https://user-images.githubusercontent.com/129755780/229827910-70d240f7-92ee-4015-a181-2fd2deab9b9e.png)
+
+<script src="https://gist.github.com/Kmatt1217/3686e5f3b22277ffd47b31f03077830a.js"></script>
+
+![스크린샷 2023-04-04 23-39-47](https://user-images.githubusercontent.com/129755780/229828053-95d7f5e4-e6f5-4eb3-84be-6d33d02b9cef.png)
+
+## 5.3 ViT로 예측 수행
+
+<script src="https://gist.github.com/Kmatt1217/7513ad8333888faea4b946d91f3994ae.js"></script>
+
+![스크린샷 2023-04-04 23-40-34](https://user-images.githubusercontent.com/129755780/229828296-cda4bcb7-c454-4b77-8b7d-41a789903cd6.png)
+
+<script src="https://gist.github.com/Kmatt1217/6c1904733ce56b43809fd51a27a20934.js"></script>
+
+![스크린샷 2023-04-04 23-41-06](https://user-images.githubusercontent.com/129755780/229828456-222a393e-8fce-4cda-8ccd-ff95823cf8af.png)
+
+<script src="https://gist.github.com/Kmatt1217/b17fab6da7c6ea6e7008588b29f804a8.js"></script>
+
+![스크린샷 2023-04-04 23-41-30](https://user-images.githubusercontent.com/129755780/229828600-e7ad802b-a091-41bd-9bc8-6ee559afd093.png)
+
+<script src="https://gist.github.com/Kmatt1217/74296ae1788cd76cd45777bfd8a477ad.js"></script>
+
+![스크린샷 2023-04-04 23-42-05](https://user-images.githubusercontent.com/129755780/229828816-eb388152-f731-4616-9fe1-d363b29d3496.png)
+
+<script src="https://gist.github.com/Kmatt1217/27c479f6a9a9051ca8e381a9bc1ad900.js"></script>
+
+![스크린샷 2023-04-04 23-42-40](https://user-images.githubusercontent.com/129755780/229828993-2c6a1bcf-f167-48a6-a62f-053f79e79708.png)
+
+# 6. 두 모델의 예측 결과, 수행 시간, 용량 비교
+
+<script src="https://gist.github.com/Kmatt1217/9aeb23d88faa34cb576aed0877902691.js"></script>
+
+![스크린샷 2023-04-04 23-43-32](https://user-images.githubusercontent.com/129755780/229829291-0cc7a435-2c8d-4149-8239-08a01bcc57f6.png)
+
+ * Test Loss (낮을수록 좋음) - ViT
+ * Test ACC (높을수록 좋음) - ViT
+ * 파라미터 수 (일반적으로 낮으면 좋음) - EffNetB2 (파라미터 수가 많으면 일반적으로 연산 시간이 오래 걸림)
+ * 모델 크기 (MB) - EffNetB2 (파라미터 수는 모델의 크기에 비례하는 경향이 있음.)
+ * cpu를 통해 걸린 연산 시간 (낮을 수록 좋음) - EffNetB2
+
+(두 모델다 우리가 원하는 목표 (30+FPS)를 달성하지 못했다.)
+
+<script src="https://gist.github.com/Kmatt1217/5cc3606e78e45bacab6782c79ce5b9cf.js"></script>
+
+![스크린샷 2023-04-04 23-47-10](https://user-images.githubusercontent.com/129755780/229830303-761d4512-4a27-4cf8-8db3-1f6f8637b222.png)
+
+## 6.1 속도 vs 성능 trade-off
+
+EffNetB2와 ViT 특징 추출기 모델을 비교했다. 이제 속도 대 성능 비교를 시각화해 보자.
+
+matplotlib 사용
+ 1. 테스트 정확도와 예측 시간에 걸쳐 EffNetB2와 ViT를 비교하기 위해 DataFrame에서 산점도를 만듦.
+ 2. 플롯을 보기 좋게 만들기 위해 제목과 레이블을 추가.
+ 3. 산점도의 샘플에 주석 달기.
+ 4. 모델 크기(`model_size (MB)`)를 기반으로 legend(범례?)를 생성.
+
+<script src="https://gist.github.com/Kmatt1217/8acb44b923501743df92db677db34790.js"></script>
+
+![download](https://user-images.githubusercontent.com/129755780/229831097-67922372-6060-48af-8129-2a47bfa3a7b6.png)
+
+# 7. Gradio 데모를 만들어 FoodVision Mini 실현
+
+Gradio? - Gradio는 누구나 어디서나 사용할 수 있도록 친숙한 웹 인터페이스로 기계 학습 모델을 시연하는 쉽고 빠른 방법 중 하나
+
+참고: https://gradio.app/
+
+<script src="https://gist.github.com/Kmatt1217/885e51f0a049a3f33566772757a204ff.js"></script>
+
+![스크린샷 2023-04-04 23-51-55](https://user-images.githubusercontent.com/129755780/229831711-ca0fbb6f-edb7-436e-8aa4-133c8d761fb8.png)
+
+## 7.1 Gradio 개요
+
+Gradio는 기계 학습 demo를 만드는 데 도움을 줌.
+
+데모를 만드는 이유는 우리가 만든 모델을 실생활에서 시험해 볼 수 있기 떄문이다.
+
+Gradio의 전반적인 전제는 입력 -> 함수/모델 -> 출력을 매핑하는 것.
+
+## 7.2 입력을 매핑하는 함수 만들기
+
+음식 이미지 -> 기계 학습 모델 (EffNetB2) -> 출력 (음식의 클래스, 라벨)
+
+<script src="https://gist.github.com/Kmatt1217/3ffdef644e83f6d551ee22687d51cf3a.js"></script>
+
+<script src="https://gist.github.com/Kmatt1217/f226ad76be2c497943d535b47d7282fd.js"></script>
+
+![스크린샷 2023-04-04 23-55-47](https://user-images.githubusercontent.com/129755780/229832889-30976087-acfa-4aad-8999-256093719356.png)
+
+## 7.3 예시 이미지 목록 만들기
+
+참고: https://gradio.app/docs/#building-demos
+
+<script src="https://gist.github.com/Kmatt1217/cd20242dd3a96667f99fe2eea5cdc77e.js"></script>
+
+![스크린샷 2023-04-04 23-57-10](https://user-images.githubusercontent.com/129755780/229833272-dbd71e67-11b6-4adb-af22-62dee7ee6570.png)
+
+## 7.4 Gradio 인터페이스 구축
+
+`gr.Interface()`로 인터페이스 구축.
+
+입력: 이미지 -> 변환 -> EffNetB2로 예측 -> 출력: 예상 클래스(라벨), 예측 확률, 걸린 시간
+
+<script src="https://gist.github.com/Kmatt1217/c958abe0087cbfceff6b9258be273931.js"></script>
+
+# 8. FoodVision Mini Gradio 데모를 배포 가능한 앱으로 전환
+
+현재 Google Colab/Jupyter의 Gradio 데모는 72시간 지나면 만료됨.
+
+이 문제를 해결하기 위해 Hugging Face Spaces(https://huggingface.co/docs/hub/spaces)에서 호스팅할 수 있도록 앱 파일을 준비하자.
+
+## 8.1 Hugging Face Spaces?
+
+  Hugging Face Spaces는 프로필 또는 조직의 프로필에서 직접 ML 데모 앱을 호스팅하는 간단한 방법을 제공한다. 이를 통해 ML 포트폴리오를 만들고, 컨퍼런스 또는 이해 관계자에게 프로젝트를 선보이고, ML 에코시스템의 다른 사람들과 협력할 수 있다.
