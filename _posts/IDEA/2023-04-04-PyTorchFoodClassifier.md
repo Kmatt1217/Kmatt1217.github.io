@@ -28,6 +28,6 @@ Machine learning 모델 배포(Model deployment)는 구현한 머신 러닝 모�
 <script src="https://gist.github.com/KimSungHeon/362cd63ff96acd9bfaa1432f92202378.js"></script>
 
 device agnostic code. 복잡한 Tensor연산이 수반되므로, 필수적으로 좋은 hardward, 특히 GPU가 필요하며, 우리는 Tensor를 GPU안에서 연산을 돌릴 것이다.
- ( <https://nirsa.tistory.com/332> 등을 참고하여 우선 Jupyter에서 GPU인식이 가능하게 하자.)
+ ( https://nirsa.tistory.com/332 등을 참고하여 우선 Jupyter에서 GPU인식이 가능하게 하자.)
 
 # 1. 데이터 가져오기
