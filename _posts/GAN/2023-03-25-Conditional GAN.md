@@ -1,13 +1,17 @@
 ---
+layout: posts
 title: Conditional GAN
 categories:
- - 논문 구현(Deep Learning)
+ - 논문 구현
 tags:
  - GAN
  - DeepLearning
  - Generative model
 toc: true
 toc_sticky: true
+author_profile: true
+sidebar:
+  nav: "categories"
 ---
 
 참고 논문 : [Conditional GAN.pdf](https://github.com/KimSungHeon/KimSungHeon.github.io/files/11068671/Conditional.GAN.pdf)

@@ -104,7 +104,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Kim SungHeon"
+  name             : "KimSungHeon"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "인공지능 관련 공부한 내용을 업로드 하고 있습니다."
   location         : "Korea"
@@ -218,7 +218,7 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
+paginate: 10 # amount of posts to show
 paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
@@ -286,11 +286,12 @@ defaults:
     values:
       layout: single
       author_profile: true
-      read_time: true
+      read_time: true #true for default 
       comments: # true
-      share: true
+      share: true 
       related: true
-      
+
+
   # _pages                      : 해당 하단 영역이 새로 추가되었습니다.
   - scope:
       path: "_pages"
@@ -298,3 +299,4 @@ defaults:
     values:
       layout: single
       author_profile: true
+

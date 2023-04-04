@@ -1,11 +1,14 @@
 ---
 title: Style Transfer
 categories:
- - 논문 구현(Deep Learning)
+ - 논문 구현
 tags:
  - DeepLearning
 toc: true
 toc_sticky: true
+author_profile: true
+sidebar:
+  nav: "categories"
 ---
 
 

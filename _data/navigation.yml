@@ -16,3 +16,12 @@ main:
     url: "/categories/"
   - title: "Tags"
     url: /tags/
+    
+    
+categories:
+  - title: "논문 구현"
+    url: /categories/논문 구현/
+  - title: "Machine Learning"
+    url: /categories/MachineLearning/
+  - title: "아이디어 및 application"
+    url: /categories/아이디어및application/
