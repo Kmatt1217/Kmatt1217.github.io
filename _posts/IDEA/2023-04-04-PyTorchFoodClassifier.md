@@ -10,6 +10,8 @@ sidebar:
   nav: "categories"
 ---
 
+https://huggingface.co/spaces/kmatt1217/foodvision_mini
+
 # PyTorch Model Deployment
 
 Model deployment란?
