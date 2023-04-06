@@ -221,6 +221,8 @@ class_names.txt파일을 열어 클래스 이름을 불러옴
 
 배포 하는 방법: https://www.learnpytorch.io/09_pytorch_model_deployment/#117-deploying-our-foodvision-big-app-to-huggingface-spaces
 
+# 3. 결과물
+
 https://huggingface.co/spaces/kmatt1217/foodvision_big
 
                
