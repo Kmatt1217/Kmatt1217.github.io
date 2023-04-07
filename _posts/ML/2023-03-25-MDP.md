@@ -7,7 +7,9 @@ tags:
  - MachineLearning
 toc: true
 toc_sticky: true
-
+author_profile: true
+sidebar:
+  nav: "categories"
 use_math: true
 ---
 
