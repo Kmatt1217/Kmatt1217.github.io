@@ -9,6 +9,9 @@ toc: true
 toc_sticky: true
 
 use_math: true
+author_profile: true
+sidebar:
+  nav: "categories"
 ---
 
 # Logistic Regression
